@@ -3,13 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=<1.0>">
     <title>Document</title>
 </head>
 <body>
+    <form action="http://localhost:3000/contenedors" method="GET">
+        <input type="submit">
+    </form>
 
-    <div id="app"></div>
-    <button id="btn">Click me!</button>
-    <script src="my.js"></script>
+    <br><hr><br>
+  
+    <label for='nombre'>nombre:</label>
+    <input type='text' id='nombre' id='nombre'>
+    <button id="consulta">Consulta</button>
+
+    <div id="salida"></div>
+
+<script>
+    const url = "http://localhost:3000/contenedors";
+
+    const createReq = function(url){
+        fetch(url)
+            .then((x)=>x.json())
+            .then((y)=>llenar(y));
+            ;
+    }
+
+    function llenar(data){
+        console.log(data);
+        var str = "";
+        for(var i = 0; i< data.length ; i++){
+            str = str + "<p>"+data[i].objeto.nombre +"</p>";
+        }
+        document.getElementById('salida').innerHTML = str;
+    }
+
+
+  createReq(url);
+
+    function complem(data){
+
+                var str_salida = "<p>"+ obj_miConsulta.objeto.nombre + "</p>";        
+                document.getElementById('salida').innerHTML = str_salida;        
+    }
+
+
+
+    //reateRequest(url);
+
+
+
+    document.getElementById('consulta').addEventListener('click',hacerPost);
+   
+    function hacerPost(){
+
+        var valorNombre = document.getElementById('nombre').value;
+
+        const data = {
+                        objeto: {nombre : valorNombre},
+                        valido: true,
+                        additionalProp1: {}
+                    };
+
+                fetch(url, {
+                                method: 'POST', // or 'PUT'
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify(data),
+                            })
+                .then(response => response.json())
+                .then(data => {
+                        console.log('Success:', data)
+                    })
+                .then((z)=>llenar(z))
+                .catch((error) => {
+                console.error('Error:', error);
+                });
+    }
+
+
+/* 
+    async function algo(x){
+        var xConsulta = await createRequest(x);
+        return xConsulta;
+    };
+
+    console.log(algo(url));
+
+    function mostrarConsulta(data){
+        console.log(data);
+    }
+*/ 
+</script>
+    
 </body>
 </html>
